@@ -1,0 +1,40 @@
+W:\13.Develop\1.Sources\TuanAnh\Project2025\Scrap
+
+=================================// fix loi chung chi ==
+link anh trinh gui:	https://qiita.com/yutabo_/items/2c657a918b853f198f7d
+co 2 file chung chi thu muc dowload
+
+==============// buoc 1
+tai va cai java 17
+Tải và cài JDK chuẩn (khuyên dùng JDK 17):
+https://adoptium.net/temurin/releases/?version=17
+https://adoptium.net/en-GB/temurin/releases/?version=17
+
+C:\Program Files\Eclipse Adoptium\jdk-17.x.x
+after install => C:\Program Files\Eclipse Adoptium\jdk-17.x.x\bin vào Path => keytool user every where.
+Advanced system settings → Chọn Environment Variables
+==============// buoc 2:
+thiet lap bien moi truong: JAVA_HOME và PATH
+ Environment Variables: C:\Program Files\Eclipse Adoptium\jdk-17.x.x
+System variables: %JAVA_HOME%\bin
+
+==> nhan OK de luu
+buoc 3:
+kiem tra:
+Open PowerShell / Command Prompt, run: Admin
+java -version
+openjdk version "17.x.x"  ...
+Eclipse Temurin ...
+test keytool: keytool -help
+==============// buoc 4: 
+Add chung chi  (Open PowerShell / Command Prompt, run: Admin)
+& "C:\Program Files\Eclipse Adoptium\jdk-21.0.7.6-hotspot\bin\keytool.exe" -import -alias Zscaler -file "C:\Users\70K6885\Downloads\Zscaler_Root_Certificates 1.cer" -keystore "C:\Program Files\Eclipse Adoptium\jdk-21.0.7.6-hotspot\lib\security\cacerts"
+
+mat khau: changeit
+xac nhan : yes
+===============// buoc 5: don dep lai Flutter
+flutter clean
+flutter pub get
+flutter build apk
+==> sau do chay lai
+
