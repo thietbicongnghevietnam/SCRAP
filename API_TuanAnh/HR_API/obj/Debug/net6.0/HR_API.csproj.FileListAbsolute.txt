@@ -1,0 +1,142 @@
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\bin\Debug\net6.0\appsettings.Development.json
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\bin\Debug\net6.0\appsettings.json
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\bin\Debug\net6.0\HR_API.exe
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\bin\Debug\net6.0\HR_API.deps.json
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\bin\Debug\net6.0\HR_API.runtimeconfig.json
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\bin\Debug\net6.0\HR_API.dll
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\bin\Debug\net6.0\HR_API.pdb
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\bin\Debug\net6.0\Microsoft.OpenApi.dll
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\obj\Debug\net6.0\HR_API.csproj.AssemblyReference.cache
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\obj\Debug\net6.0\HR_API.GeneratedMSBuildEditorConfig.editorconfig
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\obj\Debug\net6.0\HR_API.AssemblyInfoInputs.cache
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\obj\Debug\net6.0\HR_API.AssemblyInfo.cs
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\obj\Debug\net6.0\HR_API.csproj.CoreCompileInputs.cache
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\obj\Debug\net6.0\HR_API.MvcApplicationPartsAssemblyInfo.cs
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\obj\Debug\net6.0\HR_API.MvcApplicationPartsAssemblyInfo.cache
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\obj\Debug\net6.0\staticwebassets.build.json
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\obj\Debug\net6.0\staticwebassets.development.json
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\obj\Debug\net6.0\staticwebassets\msbuild.HR_API.Microsoft.AspNetCore.StaticWebAssets.props
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\obj\Debug\net6.0\staticwebassets\msbuild.build.HR_API.props
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.HR_API.props
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.HR_API.props
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\obj\Debug\net6.0\staticwebassets.pack.json
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\obj\Debug\net6.0\scopedcss\bundle\HR_API.styles.css
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\obj\Debug\net6.0\HR_API.csproj.Up2Date
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\obj\Debug\net6.0\HR_API.dll
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\obj\Debug\net6.0\refint\HR_API.dll
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\obj\Debug\net6.0\HR_API.pdb
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\obj\Debug\net6.0\HR_API.genruntimeconfig.cache
+W:\13.Develop\1.Sources\TuanAnh\HR_API\HR_API\HR_API\obj\Debug\net6.0\ref\HR_API.dll
+C:\Users\70P7970\Desktop\HR_API\HR_API\bin\Debug\net6.0\appsettings.Development.json
+C:\Users\70P7970\Desktop\HR_API\HR_API\bin\Debug\net6.0\appsettings.json
+C:\Users\70P7970\Desktop\HR_API\HR_API\bin\Debug\net6.0\HR_API.exe
+C:\Users\70P7970\Desktop\HR_API\HR_API\bin\Debug\net6.0\HR_API.deps.json
+C:\Users\70P7970\Desktop\HR_API\HR_API\bin\Debug\net6.0\HR_API.runtimeconfig.json
+C:\Users\70P7970\Desktop\HR_API\HR_API\bin\Debug\net6.0\HR_API.dll
+C:\Users\70P7970\Desktop\HR_API\HR_API\bin\Debug\net6.0\HR_API.pdb
+C:\Users\70P7970\Desktop\HR_API\HR_API\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\70P7970\Desktop\HR_API\HR_API\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\70P7970\Desktop\HR_API\HR_API\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\70P7970\Desktop\HR_API\HR_API\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\70P7970\Desktop\HR_API\HR_API\obj\Debug\net6.0\HR_API.csproj.AssemblyReference.cache
+C:\Users\70P7970\Desktop\HR_API\HR_API\obj\Debug\net6.0\HR_API.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\70P7970\Desktop\HR_API\HR_API\obj\Debug\net6.0\HR_API.AssemblyInfoInputs.cache
+C:\Users\70P7970\Desktop\HR_API\HR_API\obj\Debug\net6.0\HR_API.AssemblyInfo.cs
+C:\Users\70P7970\Desktop\HR_API\HR_API\obj\Debug\net6.0\HR_API.csproj.CoreCompileInputs.cache
+C:\Users\70P7970\Desktop\HR_API\HR_API\obj\Debug\net6.0\HR_API.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\70P7970\Desktop\HR_API\HR_API\obj\Debug\net6.0\HR_API.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\70P7970\Desktop\HR_API\HR_API\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\70P7970\Desktop\HR_API\HR_API\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\70P7970\Desktop\HR_API\HR_API\obj\Debug\net6.0\staticwebassets\msbuild.HR_API.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\70P7970\Desktop\HR_API\HR_API\obj\Debug\net6.0\staticwebassets\msbuild.build.HR_API.props
+C:\Users\70P7970\Desktop\HR_API\HR_API\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.HR_API.props
+C:\Users\70P7970\Desktop\HR_API\HR_API\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.HR_API.props
+C:\Users\70P7970\Desktop\HR_API\HR_API\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Users\70P7970\Desktop\HR_API\HR_API\obj\Debug\net6.0\scopedcss\bundle\HR_API.styles.css
+C:\Users\70P7970\Desktop\HR_API\HR_API\obj\Debug\net6.0\HR_API.csproj.Up2Date
+C:\Users\70P7970\Desktop\HR_API\HR_API\obj\Debug\net6.0\HR_API.dll
+C:\Users\70P7970\Desktop\HR_API\HR_API\obj\Debug\net6.0\refint\HR_API.dll
+C:\Users\70P7970\Desktop\HR_API\HR_API\obj\Debug\net6.0\HR_API.pdb
+C:\Users\70P7970\Desktop\HR_API\HR_API\obj\Debug\net6.0\HR_API.genruntimeconfig.cache
+C:\Users\70P7970\Desktop\HR_API\HR_API\obj\Debug\net6.0\ref\HR_API.dll
+E:\Projects\API_CODE\API_TuanAnh\HR_API\bin\Debug\net6.0\appsettings.Development.json
+E:\Projects\API_CODE\API_TuanAnh\HR_API\bin\Debug\net6.0\appsettings.json
+E:\Projects\API_CODE\API_TuanAnh\HR_API\bin\Debug\net6.0\HR_API.exe
+E:\Projects\API_CODE\API_TuanAnh\HR_API\bin\Debug\net6.0\HR_API.deps.json
+E:\Projects\API_CODE\API_TuanAnh\HR_API\bin\Debug\net6.0\HR_API.runtimeconfig.json
+E:\Projects\API_CODE\API_TuanAnh\HR_API\bin\Debug\net6.0\HR_API.dll
+E:\Projects\API_CODE\API_TuanAnh\HR_API\bin\Debug\net6.0\HR_API.pdb
+E:\Projects\API_CODE\API_TuanAnh\HR_API\bin\Debug\net6.0\Microsoft.OpenApi.dll
+E:\Projects\API_CODE\API_TuanAnh\HR_API\bin\Debug\net6.0\Newtonsoft.Json.dll
+E:\Projects\API_CODE\API_TuanAnh\HR_API\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+E:\Projects\API_CODE\API_TuanAnh\HR_API\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+E:\Projects\API_CODE\API_TuanAnh\HR_API\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+E:\Projects\API_CODE\API_TuanAnh\HR_API\bin\Debug\net6.0\System.Data.SqlClient.dll
+E:\Projects\API_CODE\API_TuanAnh\HR_API\bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll
+E:\Projects\API_CODE\API_TuanAnh\HR_API\bin\Debug\net6.0\runtimes\win-x64\native\sni.dll
+E:\Projects\API_CODE\API_TuanAnh\HR_API\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
+E:\Projects\API_CODE\API_TuanAnh\HR_API\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+E:\Projects\API_CODE\API_TuanAnh\HR_API\bin\Debug\net6.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+E:\Projects\API_CODE\API_TuanAnh\HR_API\obj\Debug\net6.0\HR_API.csproj.AssemblyReference.cache
+E:\Projects\API_CODE\API_TuanAnh\HR_API\obj\Debug\net6.0\HR_API.GeneratedMSBuildEditorConfig.editorconfig
+E:\Projects\API_CODE\API_TuanAnh\HR_API\obj\Debug\net6.0\HR_API.AssemblyInfoInputs.cache
+E:\Projects\API_CODE\API_TuanAnh\HR_API\obj\Debug\net6.0\HR_API.AssemblyInfo.cs
+E:\Projects\API_CODE\API_TuanAnh\HR_API\obj\Debug\net6.0\HR_API.csproj.CoreCompileInputs.cache
+E:\Projects\API_CODE\API_TuanAnh\HR_API\obj\Debug\net6.0\HR_API.MvcApplicationPartsAssemblyInfo.cs
+E:\Projects\API_CODE\API_TuanAnh\HR_API\obj\Debug\net6.0\HR_API.MvcApplicationPartsAssemblyInfo.cache
+E:\Projects\API_CODE\API_TuanAnh\HR_API\obj\Debug\net6.0\staticwebassets.build.json
+E:\Projects\API_CODE\API_TuanAnh\HR_API\obj\Debug\net6.0\staticwebassets.development.json
+E:\Projects\API_CODE\API_TuanAnh\HR_API\obj\Debug\net6.0\staticwebassets\msbuild.HR_API.Microsoft.AspNetCore.StaticWebAssets.props
+E:\Projects\API_CODE\API_TuanAnh\HR_API\obj\Debug\net6.0\staticwebassets\msbuild.build.HR_API.props
+E:\Projects\API_CODE\API_TuanAnh\HR_API\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.HR_API.props
+E:\Projects\API_CODE\API_TuanAnh\HR_API\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.HR_API.props
+E:\Projects\API_CODE\API_TuanAnh\HR_API\obj\Debug\net6.0\staticwebassets.pack.json
+E:\Projects\API_CODE\API_TuanAnh\HR_API\obj\Debug\net6.0\scopedcss\bundle\HR_API.styles.css
+E:\Projects\API_CODE\API_TuanAnh\HR_API\obj\Debug\net6.0\HR_API.csproj.CopyComplete
+E:\Projects\API_CODE\API_TuanAnh\HR_API\obj\Debug\net6.0\HR_API.dll
+E:\Projects\API_CODE\API_TuanAnh\HR_API\obj\Debug\net6.0\refint\HR_API.dll
+E:\Projects\API_CODE\API_TuanAnh\HR_API\obj\Debug\net6.0\HR_API.pdb
+E:\Projects\API_CODE\API_TuanAnh\HR_API\obj\Debug\net6.0\HR_API.genruntimeconfig.cache
+E:\Projects\API_CODE\API_TuanAnh\HR_API\obj\Debug\net6.0\ref\HR_API.dll
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\obj\Debug\net6.0\HR_API.csproj.AssemblyReference.cache
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\obj\Debug\net6.0\HR_API.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\obj\Debug\net6.0\HR_API.AssemblyInfoInputs.cache
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\obj\Debug\net6.0\HR_API.AssemblyInfo.cs
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\obj\Debug\net6.0\HR_API.csproj.CoreCompileInputs.cache
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\obj\Debug\net6.0\HR_API.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\obj\Debug\net6.0\HR_API.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\obj\Debug\net6.0\HR_API.dll
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\obj\Debug\net6.0\refint\HR_API.dll
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\obj\Debug\net6.0\HR_API.pdb
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\bin\Debug\net6.0\appsettings.Development.json
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\bin\Debug\net6.0\appsettings.json
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\bin\Debug\net6.0\HR_API.exe
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\bin\Debug\net6.0\HR_API.deps.json
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\bin\Debug\net6.0\HR_API.runtimeconfig.json
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\bin\Debug\net6.0\HR_API.dll
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\bin\Debug\net6.0\HR_API.pdb
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\bin\Debug\net6.0\System.Data.SqlClient.dll
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\bin\Debug\net6.0\runtimes\win-x64\native\sni.dll
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\bin\Debug\net6.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\obj\Debug\net6.0\staticwebassets\msbuild.HR_API.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\obj\Debug\net6.0\staticwebassets\msbuild.build.HR_API.props
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.HR_API.props
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.HR_API.props
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\obj\Debug\net6.0\staticwebassets.pack.json
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\obj\Debug\net6.0\scopedcss\bundle\HR_API.styles.css
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\obj\Debug\net6.0\HR_API.csproj.Up2Date
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\obj\Debug\net6.0\HR_API.genruntimeconfig.cache
+C:\Users\70P7970\Documents\Softros LAN Messenger\IT_Minh - 2025 May 5 (2)\API_TuanAnh\HR_API\obj\Debug\net6.0\ref\HR_API.dll
