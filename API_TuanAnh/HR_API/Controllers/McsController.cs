@@ -320,6 +320,36 @@ namespace HR_API.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("Query_Check_GR")]
+        public async Task<IActionResult> Query_Check_GR([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                // Kiểm tra xem requestData có chứa key "userid" hay không
+                if (!requestData.ContainsKey("barcode") || !requestData.ContainsKey("SLNG"))
+                {
+                    return BadRequest("Missing 'userid' in request data.");
+                }
+
+                // Gọi phương thức để lấy dữ liệu từ cơ sở dữ liệu
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectFreeL.StoreFillDS(nameof(Query_Check_GR), CommandType.StoredProcedure, requestData["barcode"], requestData["SLNG"])
+                );
+
+                // Chuyển DataTable thành JSON
+                string json = DataTableToJson(table);
+
+                // Trả về kết quả JSON
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và trả về mã lỗi 500 cùng thông điệp
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
 
         //[HttpPost]
         //[Route("updatercforsamplerosh_new")]

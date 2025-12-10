@@ -46,6 +46,36 @@ namespace HR_API.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("SP_QmodelPalletC")]
+        public async Task<IActionResult> SP_QmodelPalletC([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                // Kiểm tra xem requestData có chứa key "userid" hay không
+                if (!requestData.ContainsKey("pallet") && !requestData.ContainsKey("cat"))
+                {
+                    return BadRequest("Missing 'userid' in request data.");
+                }
+
+                // Gọi phương thức để lấy dữ liệu từ cơ sở dữ liệu
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectTally.StoreFillDS(nameof(SP_QmodelPalletC), CommandType.StoredProcedure, requestData["pallet"], requestData["cat"])
+                );
+
+                // Chuyển DataTable thành JSON
+                string json = DataTableToJson(table);
+
+                // Trả về kết quả JSON
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và trả về mã lỗi 500 cùng thông điệp
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
         private string DataTableToJson(DataTable table)
         {
             var jsonResult = JsonConvert.SerializeObject(table);

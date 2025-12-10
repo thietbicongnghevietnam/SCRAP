@@ -121,6 +121,42 @@ namespace HR_API.Controllers
             }
         }
 
+        //API link Hung dao voi OQC 12.10.2025   ****
+        [HttpPost]
+        [Route("Query_HungDao_OQC")]
+        public async Task<IActionResult> Query_HungDao_OQC([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                // Kiểm tra xem requestData có chứa key "userid" hay không
+                if (!requestData.ContainsKey("SIName") && !requestData.ContainsKey("ModelName"))
+                {
+                    return BadRequest("Missing DATA in request data.");
+                }
+
+                //****no se giong nhu thong tin strored nay: [dbo].[Query_thongtinpalletID]  //DP202503J12
+                //cat 2 ky dau SI de biet la cate nao => (1)
+
+                
+
+                // Gọi phương thức để lấy dữ liệu từ cơ sở dữ liệu
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectOQC.StoreFillDS(nameof(Query_HungDao_OQC), CommandType.StoredProcedure, requestData["SIName"], requestData["ModelName"])
+                );
+
+                // Chuyển DataTable thành JSON
+                string json = DataTableToJson(table);
+
+                // Trả về kết quả JSON
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và trả về mã lỗi 500 cùng thông điệp
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
         private string DataTableToJson(DataTable table)
         {
             var jsonResult = JsonConvert.SerializeObject(table);

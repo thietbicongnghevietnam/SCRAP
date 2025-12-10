@@ -8,6 +8,13 @@ using static System.Collections.Specialized.BitVector32;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
+
+
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+
 namespace HR_API.Controllers
 {
     public class ScrapController : Controller
@@ -21,14 +28,14 @@ namespace HR_API.Controllers
                 return BadRequest("No file uploaded.");
             try
             {
-                
                 var ImageScrap = JsonConvert.DeserializeObject<ImageScrap>(stringImageScrap);
 
-                if(ImageScrap == null)
-                    return BadRequest("No file uploaded.");
+                if (ImageScrap == null)
+                    return BadRequest("No file uploaded.");                
 
-                // Tạo đường dẫn để lưu file, bao gồm tên userID
-                var userDirectory = Path.Combine(Directory.GetCurrentDirectory(), "ScrapData", ImageScrap.BA, ImageScrap.SanctionID);
+                // Tạo đường dẫn để lưu file, bao gồm tên userID   //D:\HAIT\Scapsystem\wwwroot\Images  ==> doi sang duoc dan nay
+                //var userDirectory = Path.Combine(Directory.GetCurrentDirectory(), "ScrapData", ImageScrap.BA, ImageScrap.SanctionID);
+                var userDirectory = Path.Combine("D:\\HAIT\\Scapsystem\\wwwroot\\Images", ImageScrap.BA, ImageScrap.SanctionID);
                 // Tạo thư mục nếu chưa tồn tại
                 Directory.CreateDirectory(userDirectory);
 
@@ -40,30 +47,62 @@ namespace HR_API.Controllers
                     await file.CopyToAsync(stream);
                 }
 
+                // Tạo đường dẫn để lưu file2
+                var userDirectory2 = Path.Combine("\\Images", ImageScrap.BA, ImageScrap.SanctionID);
+                Directory.CreateDirectory(userDirectory2);
 
                 string nameimage = ImageScrap.ImagePath.Split("/").Last();
 
-                var pathsaveimg = Path.Combine(userDirectory, nameimage);
+                //var pathsaveimg = Path.Combine(userDirectory, nameimage);
+                var pathsaveimg = Path.Combine(userDirectory2, nameimage);
 
 
-                DbconnectScrap.excutenonquerry("CreateImageScrap",
+                //18.06.2025 sau them upload all hay onebyone
+                if (ImageScrap.statusUpload == "1")
+                {
+                    //all
+                    //truong hop insert vao bang one by one
+                    DbconnectScrap.excutenonquerry("CreateImageScrap_all",
                     System.Data.CommandType.StoredProcedure,
                     ImageScrap.SanctionID,
-                    int.Parse(ImageScrap.Stt),
+                    //int.Parse(ImageScrap.Stt),
+                    ImageScrap.Stt,
                     ImageScrap.BA,
                     pathsaveimg,
                     "2025-04-21",
                     ImageScrap.UserID,
-                    UserIDSyn
+                    UserIDSyn,
+                    ImageScrap.pallet,
+                    ImageScrap.MVT
                     );
-                return Ok(ImageScrap);
+                    return Ok(ImageScrap);
+                }
+                else
+                {
+                    //truong hop insert vao bang one by one
+                    DbconnectScrap.excutenonquerry("CreateImageScrap",
+                    System.Data.CommandType.StoredProcedure,
+                    ImageScrap.SanctionID,
+                    //int.Parse(ImageScrap.Stt),
+                    ImageScrap.Stt,
+                    ImageScrap.BA,
+                    pathsaveimg,
+                    "2025-04-21",
+                    ImageScrap.UserID,
+                    UserIDSyn,
+                    ImageScrap.MVT
+                    );
+                    return Ok(ImageScrap);
+                }
+
+
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
 
-           
+
         }
         [HttpPost]
         [Route("LoginScrap")]
@@ -98,6 +137,70 @@ namespace HR_API.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("UploadPalletID")]       
+        public async Task<IActionResult> UploadPalletID([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                //01.07.2025 chuyen them bien //quantity ==> truong hop chia pallet //partNumber
+                // Kiểm tra xem requestData có chứa key "userid" hay không //quantity   //Quantity_Act
+                if (!requestData.ContainsKey("UserID") && !requestData.ContainsKey("SanctionID") && !requestData.ContainsKey("Palletid") && !requestData.ContainsKey("stt") && !requestData.ContainsKey("quantity") && !requestData.ContainsKey("partNumber") && !requestData.ContainsKey("Quantity_Act"))
+                {
+                    return BadRequest("Missing DATA in request data.");
+                }
+                // Gọi phương thức để lấy dữ liệu từ cơ sở dữ liệu
+                DataTable table = await Task.FromResult<DataTable>(
+                    DbconnectScrap.StoreFillDS(nameof(UploadPalletID), CommandType.StoredProcedure, requestData["UserID"], requestData["SanctionID"], requestData["Palletid"], requestData["stt"], requestData["quantity"], requestData["partNumber"], requestData["Quantity_Act"])
+                );
+
+                // Chuyển DataTable thành JSON
+                string json = DataTableToJson(table);
+
+                // Trả về kết quả JSON
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và trả về mã lỗi 500 cùng thông điệp
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("CheckSanctiondelete")]
+        public async Task<IActionResult> CheckSanctiondelete([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {                
+                if (!requestData.ContainsKey("UserID") && !requestData.ContainsKey("SanctionID"))
+                {
+                    return BadRequest("Missing DATA in request data.");
+                }
+                // Gọi phương thức để lấy dữ liệu từ cơ sở dữ liệu
+                DataTable table = await Task.FromResult<DataTable>(
+                    DbconnectScrap.StoreFillDS(nameof(CheckSanctiondelete), CommandType.StoredProcedure, requestData["UserID"], requestData["SanctionID"] )
+                );
+
+                // Chuyển DataTable thành JSON
+                string json = DataTableToJson(table);
+
+                // Trả về kết quả JSON
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và trả về mã lỗi 500 cùng thông điệp
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        private string DataTableToJson(DataTable table)
+        {
+            var jsonResult = JsonConvert.SerializeObject(table);
+            return jsonResult;
+        }
+
         [Route("LoadScrap")]
         [DisableRequestSizeLimit]
         [HttpPost]
@@ -123,7 +226,48 @@ namespace HR_API.Controllers
                         UserID = Row["UserID"].ToString(),
                         DatetimeLoad = DateTime.Now,
                         StatusUpload = 0,
-                        DatetimeUpload = " "
+                        DatetimeUpload = " ",
+                        Barcode = Row["Barcode"].ToString(),
+                        mvt = Row["mvt"].ToString(),
+                    };
+                    ScrapList.Add(scrap);
+                }
+                return Ok(ScrapList);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Route("LoadScrap_sanction")]
+        [DisableRequestSizeLimit]
+        [HttpPost]
+        public async Task<IActionResult> LoadScrap_sanction([FromBody] LoadDataRequest request)
+        {
+            try
+            {
+                DataTable Scraps = DbconnectScrap.StoreFillDS("LoadScrap_sanction",
+                 System.Data.CommandType.StoredProcedure,
+                request.SanctionID
+                 );
+                List<Scrap> ScrapList = new List<Scrap>();
+                foreach (DataRow Row in Scraps.Rows)
+                {
+                    Scrap scrap = new Scrap()
+                    {
+                        SanctionID = Row["SanctionID"].ToString(),
+
+                        Stt = int.Parse(Row["stt"].ToString()),
+                        PartName = Row["partName"].ToString(),
+                        PartNumber = Row["partNumber"].ToString(),
+                        Quantity = double.Parse(Row["quantity"].ToString()),
+                        Pallet = Row["pallet"].ToString(),
+                        StatusUpload = 0,
+                        DatetimeLoad = DateTime.Now,
+                        DatetimeUpload = " ",
+                        UserID = Row["UserID"].ToString()                                                
+                        
                     };
                     ScrapList.Add(scrap);
                 }
@@ -135,6 +279,9 @@ namespace HR_API.Controllers
             }
         }
     }
+
+    
+
     public class ImageScrap
     {
         public string SanctionID { get; set; }
@@ -143,6 +290,11 @@ namespace HR_API.Controllers
         public string ImagePath { get; set; }
         public string? Datetimecreate { get; set; }
         public string UserID { get; set; }
+        public string statusUpload { get; set; }
+        public string pallet { get; set; }
+        public string MVT { get; set; }
+
+
     }
     public class User
     {
@@ -173,6 +325,15 @@ namespace HR_API.Controllers
         public string DatetimeUpload { get; set; }
         [JsonPropertyName("DatetimeLoad")]
         public DateTime? DatetimeLoad { get; set; }
+
+        [JsonPropertyName("Quantity_Act")]
+        public double? Quantity_Act { get; set; }
+        [JsonPropertyName("Barcode")]
+        public string? Barcode { get; set; }
+        [JsonPropertyName("mvt")]
+        public string? mvt { get; set; }
+
+
     }
     public class LoginRequest
     {
