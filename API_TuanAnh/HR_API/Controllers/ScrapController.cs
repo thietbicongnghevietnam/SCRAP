@@ -168,6 +168,36 @@ namespace HR_API.Controllers
         }
 
         [HttpPost]
+        [Route("sp_CheckImagePallet")]
+        public async Task<IActionResult> sp_CheckImagePallet([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                //01.07.2025 chuyen them bien //quantity ==> truong hop chia pallet //partNumber
+                // Kiểm tra xem requestData có chứa key "userid" hay không //quantity   //Quantity_Act
+                if (!requestData.ContainsKey("SanctionID") )
+                {
+                    return BadRequest("Missing DATA in request data.");
+                }
+                // Gọi phương thức để lấy dữ liệu từ cơ sở dữ liệu
+                DataTable table = await Task.FromResult<DataTable>(
+                    DbconnectScrap.StoreFillDS(nameof(sp_CheckImagePallet), CommandType.StoredProcedure, requestData["SanctionID"] )
+                );
+
+                // Chuyển DataTable thành JSON
+                string json = DataTableToJson(table);
+
+                // Trả về kết quả JSON
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và trả về mã lỗi 500 cùng thông điệp
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpPost]
         [Route("CheckSanctiondelete")]
         public async Task<IActionResult> CheckSanctiondelete([FromBody] Dictionary<string, string> requestData)
         {
