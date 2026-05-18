@@ -59,6 +59,7 @@ namespace HR_API.Controllers
             }
         }
 
+        //http://10.92.184.22:8036/swagger/index.html
         [HttpPost]
         [Route("SendMailAlertWithAttachment")]
         [DisableRequestSizeLimit]
@@ -71,7 +72,13 @@ namespace HR_API.Controllers
 
                 var smtpClient = new System.Net.Mail.SmtpClient("157.8.1.131");
 
-                var fromMail = new System.Net.Mail.MailAddress("psnv.isg@vn.panasonic.com", "ECN system");
+                var systemName = string.IsNullOrWhiteSpace(request.SystemName)
+                ? "ECN system"
+                : request.SystemName.Trim();
+
+                //var fromMail = new System.Net.Mail.MailAddress("psnv.isg@vn.panasonic.com", "ECN system");
+
+                var fromMail = new System.Net.Mail.MailAddress("psnv.isg@vn.panasonic.com", systemName);
 
                 using var message = new System.Net.Mail.MailMessage();
                 message.From = fromMail;
@@ -109,12 +116,24 @@ namespace HR_API.Controllers
                 await smtpClient.SendMailAsync(message);
 
                 //return Ok("Send Mail Success");
-                return Ok(true);   // gửi thành công
+                //return Ok(true);   // gửi thành công
+                return Ok(new
+                {
+                    success = true,
+                    message = "Send mail success"
+                });
             }
             catch (Exception ex)
             {
                 //return BadRequest(ex.Message);
-                return Ok(false);  // gửi lỗi
+                //return Ok(false);  // gửi lỗi
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "Send mail failed",
+                    error = ex.Message,
+                    stackTrace = ex.StackTrace
+                });
             }
         }
 
@@ -143,6 +162,8 @@ namespace HR_API.Controllers
 
             [FromForm(Name = "file")]
             public IFormFile File { get; set; } // file đính kèm (tùy chọn)
+
+            public string? SystemName { get; set; } // thêm dòng này
         }
 
 
