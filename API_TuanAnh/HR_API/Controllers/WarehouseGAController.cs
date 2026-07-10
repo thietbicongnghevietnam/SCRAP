@@ -311,6 +311,31 @@ namespace HR_API.Controllers
             }
         }
 
+        //http://10.92.184.22:8036/swagger/index.html
+        //link API cho hieu ACC dowload ve : 01.06.2026
+        [HttpPost]
+        [Route("GetMaster_Stationery_GA")]
+        public async Task<IActionResult> GetMaster_Stationery_GA([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {               
+                // Gọi phương thức để lấy dữ liệu từ cơ sở dữ liệu
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectGA.StoreFillDS(nameof(GetMaster_Stationery_GA), CommandType.StoredProcedure)
+                );
+
+                // Chuyển DataTable thành JSON
+                string json = DataTableToJson(table);
+
+                // Trả về kết quả JSON
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và trả về mã lỗi 500 cùng thông điệp
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
 
 
         private string DataTableToJson(DataTable table)

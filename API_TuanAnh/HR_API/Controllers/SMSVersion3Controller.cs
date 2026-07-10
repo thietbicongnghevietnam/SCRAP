@@ -77,8 +77,10 @@ namespace HR_API.Controllers
                 : request.SystemName.Trim();
 
                 //var fromMail = new System.Net.Mail.MailAddress("psnv.isg@vn.panasonic.com", "ECN system");
-
-                var fromMail = new System.Net.Mail.MailAddress("psnv.isg@vn.panasonic.com", systemName);
+                //ducphu.vu@vn.panasonic.com  ==> fix loi spam mail khong ton tai 02.07.2026
+                //var fromMail = new System.Net.Mail.MailAddress("psnv.isg@vn.panasonic.com", systemName);
+                //nhuminh.nguyen@vn.panasonic.com //thilinh.hoang@vn.panasonic.com
+                var fromMail = new System.Net.Mail.MailAddress("Psnv.dev@vn.panasonic.com", systemName);
 
                 using var message = new System.Net.Mail.MailMessage();
                 message.From = fromMail;
