@@ -13,6 +13,8 @@ namespace HR_API.Data
         public DbSet<Device> Devices { get; set; }
         public DbSet<Message> Messages { get; set; }
 
+        public DbSet<Devices_Phone_QC> Devices_Phone_QC { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

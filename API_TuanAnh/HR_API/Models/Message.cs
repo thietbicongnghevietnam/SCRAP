@@ -9,6 +9,15 @@
         public bool IsSentToAll { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Section { get; set; }
+        public string? Status { get; set; }
+        public string? UserName { get; set; }   // ← Thêm
+        public string? UserID { get; set; }   // ← Thêm
+
+        // ===== Thêm các cột này ===== tha tim
+        public bool IsRead { get; set; } = false;
+        public DateTime? ReadTime { get; set; }
+        public string? ReadByUserID { get; set; }
+        public string? ReadByUserName { get; set; }
 
 
     }

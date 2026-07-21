@@ -20,8 +20,11 @@
         public string IpAddress { get; set; }
 
         public string? ConnectionId { get; set; }
+        public string? Section { get; set; }
 
         public DateTime LastActive { get; set; }
+
+        public string? UserID { get; set; }
     }
 
 }

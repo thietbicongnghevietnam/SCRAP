@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Threading.Tasks;
 using HR_API.APP_Start;
+using Microsoft.Extensions.Configuration;
 
 namespace HR_API.Controllers
 {
@@ -346,10 +347,60 @@ namespace HR_API.Controllers
             }
         }
 
+        [HttpPost("Upload_Data_OCR_SB")]
+        public async Task<IActionResult> Upload_Data_OCR_SB([FromBody] UploadOCRRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Model) || string.IsNullOrWhiteSpace(request.Serial))
+            {
+                return BadRequest(new { Result = 0, Message = "Model và Serial không được để trống" });
+            }
+
+            try
+            {
+                string model = request.Model.Trim();
+                string serial = request.Serial.Trim();
+
+                DataTable dt_new = DataconnectOQC.StoreFillDS("Upload_Data_OCR_SB",System.Data.CommandType.StoredProcedure,model,serial);
+
+                // Kiểm tra dữ liệu trả về
+                if (dt_new == null || dt_new.Rows.Count == 0)
+                {
+                    return StatusCode(500, new { Result = 0, Message = "Stored Procedure không trả về dữ liệu" });
+                }
+
+                // Lấy kết quả (giả sử cột đầu tiên là Result)
+                var resultValue = dt_new.Rows[0][0].ToString();
+                int resultCode = Convert.ToInt32(resultValue);
+
+                if (resultCode == 1)
+                {
+                    return Ok(new { Result = 1, Message = "Thêm mới thành công" });
+                }
+                else
+                {
+                    return Ok(new { Result = 0, Message = "Serial này đã được scan trong 2 tháng qua" });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log lỗi chi tiết hơn (nên có logger)
+                //Console.WriteLine($"Error Upload_Data_OCR_SB: {ex.Message}");
+                return StatusCode(500, new { Result = 0, Message = "Lỗi server: " + ex.Message });
+            }
+        }
+
         private string DataTableToJson(DataTable table)
         {
             var jsonResult = JsonConvert.SerializeObject(table);
             return jsonResult;
+        }
+
+        public class UploadOCRRequest
+        {
+            public string Model { get; set; } = string.Empty;
+            public string Serial { get; set; } = string.Empty;
+            //public string? OcrText { get; set; }
+            //public string? Material { get; set; }
         }
 
 

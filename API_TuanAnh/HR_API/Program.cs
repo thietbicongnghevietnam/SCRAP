@@ -1,5 +1,6 @@
 using HR_API.Data;
 using HR_API.Hubs;
+using HR_API.Workers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,8 @@ builder.Services.AddControllers();
 
 // Thêm dòng này
 builder.Services.AddSignalR();
+//dang ky worker
+builder.Services.AddHostedService<PushMessageWorker>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

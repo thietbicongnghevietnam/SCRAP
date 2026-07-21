@@ -49,16 +49,32 @@ namespace HR_API.Controllers
 
             if (device != null && !string.IsNullOrEmpty(device.ConnectionId))
             {
+                //await _hubContext.Clients
+                //    .Client(device.ConnectionId)
+                //    .SendAsync(
+                //        "ReceiveMessage",
+                //        message.SenderDeviceId,
+                //        message.Content,
+                //        message.SentTime,
+                //        message.PhoneNumber,
+                //        message.Section,
+                //        message.Id,           // ← Thêm Id vào đây (vị trí thứ 6)
+                //        message.Status ?? "Pending"  // thứ 7 nếu có
+                //    );
                 await _hubContext.Clients
-                    .Client(device.ConnectionId)
-                    .SendAsync(
-                        "ReceiveMessage",
-                        message.SenderDeviceId,
-                        message.Content,
-                        message.SentTime,
-                        message.PhoneNumber,
-                        message.Section
-                    );
+                .Client(device.ConnectionId)
+                .SendAsync(
+                    "ReceiveMessage",
+                    message.SenderDeviceId,
+                    message.Content,
+                    message.SentTime,
+                    message.PhoneNumber,
+                    message.Section,
+                    message.Id,                    // ← Thêm
+                    message.Status ?? "Pending" ,   // ← Thêm
+                    message.UserName,    // ← Thêm
+                    message.UserID    // ← Thêm
+                );
             }
 
             // Đánh dấu đã gửi
@@ -82,6 +98,46 @@ namespace HR_API.Controllers
 
             return Ok(devices);
         }
+
+        // ====================== API MỚI - ĐÃ SỬA ======================
+        //http://10.92.184.22:8036/api/Message/GetDeviceByUserId?userId=2012757&deviceId=b4fd64f2-a10c-44dc-8a7d-51d9aea82f0f
+
+        [HttpGet("GetDeviceByUserId")]
+        public async Task<IActionResult> GetDeviceByUserId(string userId, string deviceId)
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return BadRequest(new { message = "UserID không được để trống" });
+            }
+
+            // Tìm theo UserID trong bảng Devices_Phone_QC
+            var device = await _context.Devices_Phone_QC
+                .FirstOrDefaultAsync(d => d.UserID == userId);
+
+            if (device == null)
+            {
+                return NotFound(new { message = "Không tìm thấy UserID này trong hệ thống" });
+            }
+
+            // Cập nhật thông tin
+            device.mathietbi = deviceId;
+            device.LastActive = DateTime.UtcNow;     // ← Luôn cập nhật thời gian mới nhất
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                success = true,
+                section = device.Bophan,
+                userID = device.UserID,
+                userName = device.UserName,
+                phoneNumber = device.PhoneNumber,
+                mathietbi = device.mathietbi,
+                lastActive = device.LastActive
+            });
+        }
+
+
     }
 
     // DTO dùng để trigger
