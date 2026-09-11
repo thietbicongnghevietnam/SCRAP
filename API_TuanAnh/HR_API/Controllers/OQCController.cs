@@ -220,6 +220,8 @@ namespace HR_API.Controllers
         //    }
         //}
 
+
+        //http://192.168.128.131:8031/swagger/index.html
         [HttpPost]
         [Route("Query_HungDao_OQC")]
         public async Task<IActionResult> Query_HungDao_OQC([FromBody] Dictionary<string, string> requestData)
@@ -388,6 +390,43 @@ namespace HR_API.Controllers
                 return StatusCode(500, new { Result = 0, Message = "Lỗi server: " + ex.Message });
             }
         }
+
+
+        [HttpPost]
+        [Route("Query_check_Model_SoundBiz")]
+        public async Task<IActionResult> Query_check_Model_SoundBiz([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                // Kiểm tra xem requestData có chứa key "userid" hay không
+                if (!requestData.ContainsKey("ModelName"))
+                {
+                    return BadRequest("Missing DATA in request data.");
+                }
+
+                // Gọi phương thức để lấy dữ liệu từ cơ sở dữ liệu
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectOQC.StoreFillDS(nameof(Query_check_Model_SoundBiz), CommandType.StoredProcedure, requestData["ModelName"])
+                );
+
+                // Chuyển DataTable thành JSON
+                string json = DataTableToJson(table);
+
+                // Trả về kết quả JSON
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và trả về mã lỗi 500 cùng thông điệp
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+
+
+        //http://10.92.184.22:8036/swagger/index.html
+        //http://10.92.184.242:7131/settings
+
 
         private string DataTableToJson(DataTable table)
         {

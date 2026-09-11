@@ -350,6 +350,59 @@ namespace HR_API.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("Upload_DateCode_MCS")]
+        public async Task<IActionResult> Upload_DateCode_MCS([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                // Kiểm tra các key bắt buộc
+                if (!requestData.ContainsKey("material") ||
+                    !requestData.ContainsKey("codedate") ||
+                    !requestData.ContainsKey("type"))
+                {
+                    return BadRequest("Missing required fields: material, codedate, type");
+                }
+
+                // Lấy giá trị (kittingCardId có thể để trống)
+                string material = requestData["material"];
+                string codedate = requestData["codedate"];
+                string typecodedate = requestData["type"];
+                string kittingCardId = requestData.ContainsKey("kittingCardId")
+                                        ? requestData["kittingCardId"]
+                                        : "";
+                string userId = requestData["userId"];
+
+                DataTable dt_table = new DataTable();
+                if (typecodedate == "Kitting Card")
+                {
+                    //trace code date theo Kitting card
+                    // Gọi Stored Procedure
+                    dt_table = await Task.FromResult<DataTable>(
+                        DataconnectFreeL.StoreFillDS(nameof(Upload_DateCode_MCS), CommandType.StoredProcedure, material, codedate, typecodedate, kittingCardId, userId)
+                    );
+                }
+                else 
+                {
+                    //typecodedate == "PCBID"
+                    //trace code date theo FA (PCBID hoac serial no)
+                    //insert sang database trace DP FA
+                    dt_table = await Task.FromResult<DataTable>(
+                        DataconnectDPTrace.StoreFillDS(nameof(Upload_DateCode_MCS), CommandType.StoredProcedure, material, codedate, typecodedate, kittingCardId, userId)
+                    );
+                }
+               
+                // Chuyển DataTable thành JSON
+                string json = DataTableToJson(dt_table);
+
+                // Trả về kết quả
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
 
         //[HttpPost]
         //[Route("updatercforsamplerosh_new")]
@@ -402,6 +455,8 @@ namespace HR_API.Controllers
 
 
 
+
+
         //private string DataTableToJson(DataTable table)
         //{
         //    return JsonConvert.SerializeObject(table);
@@ -414,4 +469,6 @@ namespace HR_API.Controllers
         }
 
     }
+
+    
 }
