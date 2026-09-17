@@ -404,6 +404,67 @@ namespace HR_API.Controllers
             }
         }
 
+
+        [HttpPost]
+        [Route("Query_ReceivingCard_Reprint")]
+        public async Task<IActionResult> Query_ReceivingCard_Reprint([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                // Kiểm tra xem requestData có chứa key "userid" hay không
+                if (!requestData.ContainsKey("barcode") || !requestData.ContainsKey("typeSource"))
+                {
+                    return BadRequest("Missing 'userid' in request data.");
+                }
+
+                // Gọi phương thức để lấy dữ liệu từ cơ sở dữ liệu
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectFreeL.StoreFillDS(nameof(Query_ReceivingCard_Reprint), CommandType.StoredProcedure, requestData["barcode"], requestData["typeSource"])
+                );
+
+                // Chuyển DataTable thành JSON
+                string json = DataTableToJson(table);
+
+                // Trả về kết quả JSON
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và trả về mã lỗi 500 cùng thông điệp
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("Query_PrinterDevice_List")]
+        public async Task<IActionResult> Query_PrinterDevice_List([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                // Kiểm tra xem requestData có chứa key "userid" hay không
+                //if (!requestData.ContainsKey("barcode") || !requestData.ContainsKey("typeSource"))
+                //{
+                //    return BadRequest("Missing 'userid' in request data.");
+                //}
+
+                // Gọi phương thức để lấy dữ liệu từ cơ sở dữ liệu
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectFreeL.StoreFillDS(nameof(Query_PrinterDevice_List), CommandType.StoredProcedure)
+                );
+
+                // Chuyển DataTable thành JSON
+                string json = DataTableToJson(table);
+
+                // Trả về kết quả JSON
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và trả về mã lỗi 500 cùng thông điệp
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
         //[HttpPost]
         //[Route("updatercforsamplerosh_new")]
         //public async Task<IActionResult> updatercforsamplerosh_new(Dictionary<string, string> requestData)
