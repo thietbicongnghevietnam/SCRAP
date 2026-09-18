@@ -350,6 +350,8 @@ namespace HR_API.Controllers
             }
         }
 
+        // ===================================== // chuc năng QC project ==> tich hop  SWMS // ================= 
+
         [HttpPost]
         [Route("Upload_DateCode_MCS")]
         public async Task<IActionResult> Upload_DateCode_MCS([FromBody] Dictionary<string, string> requestData)
@@ -461,6 +463,87 @@ namespace HR_API.Controllers
             catch (Exception ex)
             {
                 // Xử lý lỗi và trả về mã lỗi 500 cùng thông điệp
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("Query_List_Lydo311")]
+        public async Task<IActionResult> Query_List_Lydo311([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {               
+                // Gọi phương thức để lấy dữ liệu từ cơ sở dữ liệu
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectFreeL.StoreFillDS(nameof(Query_List_Lydo311), CommandType.StoredProcedure)
+                );
+
+                // Chuyển DataTable thành JSON
+                string json = DataTableToJson(table);
+
+                // Trả về kết quả JSON
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và trả về mã lỗi 500 cùng thông điệp
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("Query_List_Tcode")]
+        public async Task<IActionResult> Query_List_Tcode([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                // Gọi phương thức để lấy dữ liệu từ cơ sở dữ liệu
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectFreeL.StoreFillDS(nameof(Query_List_Tcode), CommandType.StoredProcedure)
+                );
+
+                // Chuyển DataTable thành JSON
+                string json = DataTableToJson(table);
+
+                // Trả về kết quả JSON
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và trả về mã lỗi 500 cùng thông điệp
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("Insert_ReceivingCard_RepLoc")]
+        public async Task<IActionResult> Insert_ReceivingCard_RepLoc([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                if (!requestData.ContainsKey("barcode") || !requestData.ContainsKey("material") || !requestData.ContainsKey("quantity") || !requestData.ContainsKey("repLoc"))
+                {
+                    return BadRequest("Missing request data.");
+                }
+                string barcode = requestData["barcode"];
+                string typeSource = requestData["typeSource"];
+                string plant = requestData["plant"];
+                string material = requestData["material"];
+                string quantity = requestData["quantity"];
+                string sloc = requestData["sloc"];
+                string repLoc = requestData["repLoc"];
+                string tcode = requestData["tcode"];
+                string reason = requestData["reason"];
+                string userName = requestData["userName"];
+
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectFreeL.StoreFillDS(nameof(Insert_ReceivingCard_RepLoc), CommandType.StoredProcedure, barcode, typeSource, plant, material, quantity, sloc, repLoc, tcode, reason, userName)
+                );
+                
+                return Ok(DataTableToJson(table));
+            }
+            catch (Exception ex)
+            {
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
