@@ -548,6 +548,57 @@ namespace HR_API.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("Query_KittingCard_Outside")]
+        public async Task<IActionResult> Query_KittingCard_Outside([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                if (!requestData.ContainsKey("barcode") || !requestData.ContainsKey("userId"))
+                {
+                    return BadRequest("Missing request data.");
+                }
+                string barcode = requestData["barcode"];                
+                string userId = requestData["userId"];                
+
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectFreeL.StoreFillDS(nameof(Query_KittingCard_Outside), CommandType.StoredProcedure, barcode, userId)
+                );
+
+                return Ok(DataTableToJson(table));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("Update_SupplyKittingOutside")]
+        public async Task<IActionResult> Update_SupplyKittingOutside([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                if (!requestData.ContainsKey("barcode") || !requestData.ContainsKey("line") || !requestData.ContainsKey("userName"))
+                {
+                    return BadRequest("Missing request data.");
+                }
+                string barcode = requestData["barcode"];
+                string line = requestData["line"];
+                string userName = requestData["userName"];
+
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectFreeL.StoreFillDS(nameof(Update_SupplyKittingOutside), CommandType.StoredProcedure, barcode, line, userName)
+                );
+
+                return Ok(DataTableToJson(table));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
         //[HttpPost]
         //[Route("updatercforsamplerosh_new")]
         //public async Task<IActionResult> updatercforsamplerosh_new(Dictionary<string, string> requestData)
