@@ -5,6 +5,8 @@ using System;
 using System.Data;
 using System.Net;
 
+using System.ComponentModel.DataAnnotations;
+
 namespace HR_API.Controllers
 {
     //[Route("api/[controller]")]
@@ -351,59 +353,217 @@ namespace HR_API.Controllers
         }
 
         // ===================================== // chuc năng QC project ==> tich hop  SWMS // ================= 
+        //[HttpPost]
+        //[Route("Upload_DateCode_MCS")]
+        //public async Task<IActionResult> Upload_DateCode_MCS([FromBody] Dictionary<string, string> requestData)
+        //{
+        //    try
+        //    {
+        //        // Kiểm tra các key bắt buộc
+        //        if (!requestData.ContainsKey("material") ||
+        //            !requestData.ContainsKey("codedate") ||
+        //            !requestData.ContainsKey("type"))
+        //        {
+        //            return BadRequest("Missing required fields: material, codedate, type");
+        //        }
 
+        //        // Hàm lấy giá trị an toàn: không có key hoặc null → ""
+        //        string GetValue(string key) =>
+        //            requestData.TryGetValue(key, out var v) && v != null ? v.Trim() : "";
+
+        //        string material = GetValue("material");
+        //        string codedate = GetValue("codedate");
+        //        string typecodedate = GetValue("type");
+        //        string kittingCardId = GetValue("kittingCardId"); // có thể trống
+        //        string userId = GetValue("userId");
+        //        string serialNo = GetValue("serialNo");      // có thể trống
+
+        //        DataTable dt_table = new DataTable();
+        //        if (typecodedate == "Kitting Card")
+        //        {
+        //            // Trace code date theo Kitting card
+        //            dt_table = await Task.FromResult<DataTable>(
+        //                DataconnectFreeL.StoreFillDS(nameof(Upload_DateCode_MCS), CommandType.StoredProcedure,
+        //                    material, codedate, typecodedate, kittingCardId, userId)
+        //            );
+        //        }
+        //        else
+        //        {
+        //            // typecodedate == "PCBID"
+        //            // Trace code date theo FA (PCBID hoặc serial no) → insert sang DB trace DP FA
+        //            dt_table = await Task.FromResult<DataTable>(
+        //                DataconnectDPTrace.StoreFillDS(nameof(Upload_DateCode_MCS), CommandType.StoredProcedure,
+        //                    material, codedate, typecodedate, kittingCardId, userId, serialNo)
+        //            );
+        //        }
+
+        //        string json = DataTableToJson(dt_table);
+        //        return Ok(json);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, "Internal server error: " + ex.Message);
+        //    }
+        //}
+
+
+        //dang 2 : FromBody  ==> test dang json       //dang 3: FromForm  ==>Nếu bạn muốn Swagger hiện từng ô textbox riêng
         [HttpPost]
         [Route("Upload_DateCode_MCS")]
-        public async Task<IActionResult> Upload_DateCode_MCS([FromBody] Dictionary<string, string> requestData)
+        public async Task<IActionResult> Upload_DateCode_MCS([FromBody] UploadDateCodeRequest request)
         {
             try
             {
-                // Kiểm tra các key bắt buộc
-                if (!requestData.ContainsKey("material") ||
-                    !requestData.ContainsKey("codedate") ||
-                    !requestData.ContainsKey("type"))
+                if (request == null ||
+                    string.IsNullOrWhiteSpace(request.Material) ||
+                    string.IsNullOrWhiteSpace(request.Codedate) ||
+                    string.IsNullOrWhiteSpace(request.Type))
                 {
                     return BadRequest("Missing required fields: material, codedate, type");
                 }
 
-                // Lấy giá trị (kittingCardId có thể để trống)
-                string material = requestData["material"];
-                string codedate = requestData["codedate"];
-                string typecodedate = requestData["type"];
-                string kittingCardId = requestData.ContainsKey("kittingCardId")
-                                        ? requestData["kittingCardId"]
-                                        : "";
-                string userId = requestData["userId"];
+                string material = request.Material.Trim();
+                string codedate = request.Codedate.Trim();
+                string typecodedate = request.Type.Trim();
+                string kittingCardId = request.KittingCardId?.Trim() ?? ""; // có thể trống
+                string userId = request.UserId?.Trim() ?? "";
+                string serialNo = request.SerialNo?.Trim() ?? "";      // có thể trống
 
                 DataTable dt_table = new DataTable();
                 if (typecodedate == "Kitting Card")
                 {
-                    //trace code date theo Kitting card
-                    // Gọi Stored Procedure
+                    // Trace code date theo Kitting card
                     dt_table = await Task.FromResult<DataTable>(
-                        DataconnectFreeL.StoreFillDS(nameof(Upload_DateCode_MCS), CommandType.StoredProcedure, material, codedate, typecodedate, kittingCardId, userId)
+                        DataconnectFreeL.StoreFillDS(nameof(Upload_DateCode_MCS), CommandType.StoredProcedure,
+                            material, codedate, typecodedate, kittingCardId, userId)
                     );
                 }
-                else 
+                else
                 {
-                    //typecodedate == "PCBID"
-                    //trace code date theo FA (PCBID hoac serial no)
-                    //insert sang database trace DP FA
+                    // typecodedate == "PCBID"
+                    // Trace code date theo FA (PCBID hoặc serial no) → insert sang DB trace DP FA
                     dt_table = await Task.FromResult<DataTable>(
-                        DataconnectDPTrace.StoreFillDS(nameof(Upload_DateCode_MCS), CommandType.StoredProcedure, material, codedate, typecodedate, kittingCardId, userId)
+                        DataconnectDPTrace.StoreFillDS(nameof(Upload_DateCode_MCS), CommandType.StoredProcedure,
+                            material, codedate, typecodedate, kittingCardId, userId, serialNo)
                     );
                 }
-               
-                // Chuyển DataTable thành JSON
-                string json = DataTableToJson(dt_table);
 
-                // Trả về kết quả
+                string json = DataTableToJson(dt_table);
                 return Ok(json);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
+        }
+
+
+        //CountStandard
+        [HttpPost]
+        [Route("GetStandardModelDatecode")]
+        public async Task<IActionResult> GetStandardModelDatecode([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                // Kiểm tra xem requestData có chứa key "userid" hay không
+                if (!requestData.ContainsKey("modelName") )
+                {
+                    return BadRequest("Missing 'userid' in request data.");
+                }
+
+                // Gọi phương thức để lấy dữ liệu từ cơ sở dữ liệu
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectDPTrace.StoreFillDS(nameof(GetStandardModelDatecode), CommandType.StoredProcedure, requestData["modelName"])
+                );
+
+                // Chuyển DataTable thành JSON
+                string json = DataTableToJson(table);
+
+                // Trả về kết quả JSON
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và trả về mã lỗi 500 cùng thông điệp
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("Upload_DateCode_FA")]
+        public async Task<IActionResult> Upload_DateCode_FA([FromBody] UploadDateCodeFARequest request)
+        {
+            try
+            {
+                if (request == null)
+                    return BadRequest("Request body is null.");
+
+                if (string.IsNullOrWhiteSpace(request.material) ||
+                    string.IsNullOrWhiteSpace(request.codedate) ||
+                    string.IsNullOrWhiteSpace(request.type) ||
+                    string.IsNullOrWhiteSpace(request.kittingCardId) ||
+                    string.IsNullOrWhiteSpace(request.userId) ||
+                    string.IsNullOrWhiteSpace(request.serialNo))
+                {
+                    return BadRequest("Missing required fields.");
+                }
+
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectDPTrace.StoreFillDS(
+                        nameof(Upload_DateCode_FA),
+                        CommandType.StoredProcedure,
+                        request.material,
+                        request.codedate,
+                        request.type,
+                        request.kittingCardId,
+                        request.userId,
+                        request.serialNo,
+                        string.IsNullOrEmpty(request.flagCount) ? "1" : request.flagCount
+                    )
+                );
+
+                string json = DataTableToJson(table);
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        public class UploadDateCodeFARequest
+        {
+            public string material { get; set; }
+            public string codedate { get; set; }
+            public string type { get; set; }
+            public string kittingCardId { get; set; }
+            public string userId { get; set; }
+            public string serialNo { get; set; }
+            public string flagCount { get; set; } = "1";
+        }
+
+        public class UploadDateCodeRequest
+        {
+            /// <summary>Material / PCBID</summary>
+            [Required]
+            public string? Material { get; set; }
+
+            /// <summary>Code date</summary>
+            [Required]
+            public string? Codedate { get; set; }
+
+            /// <summary>"Kitting Card" hoặc "PCBID"</summary>
+            [Required]
+            public string? Type { get; set; }
+
+            /// <summary>ID Kitting Card (có thể trống)</summary>
+            public string? KittingCardId { get; set; }
+
+            /// <summary>User ID</summary>
+            public string? UserId { get; set; }
+
+            /// <summary>Serial No (có thể trống)</summary>
+            public string? SerialNo { get; set; }
         }
 
 
