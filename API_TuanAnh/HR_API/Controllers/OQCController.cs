@@ -122,6 +122,7 @@ namespace HR_API.Controllers
             }
         }
 
+        // ham OCR camera phu kien giay
         [HttpPost]
         [Route("Check_Accessories_Cam")]
         public async Task<IActionResult> Check_Accessories_Cam([FromBody] Dictionary<string, string> requestData)
@@ -142,6 +143,52 @@ namespace HR_API.Controllers
                 );
 
                 // Chuyển DataTable thành JSON
+                string json = DataTableToJson(table);
+
+                // Trả về kết quả JSON
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và trả về mã lỗi 500 cùng thông điệp
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        //ham scan barcode check accessory 05.10.2026
+        [HttpPost]
+        [Route("Check_Accessories_Cam2")]
+        public async Task<IActionResult> Check_Accessories_Cam2([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                if (requestData == null)
+                {
+                    return BadRequest("Missing DATA in request data.");
+                }
+                // Không phân biệt hoa thường tên key (app gửi "Accessory", "model", "serial")
+                var data = new Dictionary<string, string>(requestData, StringComparer.OrdinalIgnoreCase);
+                data.TryGetValue("model", out var model);
+                data.TryGetValue("serial", out var serial);
+                data.TryGetValue("accessory", out var accessory);
+
+                if (string.IsNullOrWhiteSpace(model) || string.IsNullOrWhiteSpace(serial) || string.IsNullOrWhiteSpace(accessory))
+                {
+                    return BadRequest("Missing model, serial or accessory in request data.");
+                }
+
+                // Gọi stored procedure sp_Save_Accessory_Cam
+                // Thứ tự tham số phải đúng với procedure: @Model, @Serial, @Accessory
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectOQC.StoreFillDS(
+                        "Check_Accessories_Cam2",
+                        CommandType.StoredProcedure,
+                        model.Trim(),
+                        serial.Trim(),
+                        accessory.Trim())
+                );
+
+                // Chuyển DataTable thành JSON: [{"Result":1,"Message":"..."}]
                 string json = DataTableToJson(table);
 
                 // Trả về kết quả JSON
