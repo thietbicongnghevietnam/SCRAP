@@ -709,6 +709,59 @@ namespace HR_API.Controllers
         }
 
         [HttpPost]
+        [Route("Query_Check_ReceivingCard_Printed")]
+        public async Task<IActionResult> Query_Check_ReceivingCard_Printed([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                if (!requestData.ContainsKey("material") || !requestData.ContainsKey("quantity") || !requestData.ContainsKey("printDate"))
+                {
+                    return BadRequest("Missing request data.");
+                }
+                
+                string material = requestData["material"];
+                string quantity = requestData["quantity"];
+                string printDate = requestData["printDate"];
+                string typeSource = requestData["typeSource"];                                                              
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectFreeL.StoreFillDS(nameof(Query_Check_ReceivingCard_Printed), CommandType.StoredProcedure, material, quantity, printDate, typeSource)
+                );
+                return Ok(DataTableToJson(table));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("Query_ReceiptSloc_ByBarcode")]
+        public async Task<IActionResult> Query_ReceiptSloc_ByBarcode([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                if (!requestData.ContainsKey("barcode"))
+                    return BadRequest("Missing request data.");
+
+                string barcode = requestData["barcode"];
+
+                DataTable table = await Task.FromResult(
+                    DataconnectFreeL.StoreFillDS(
+                        nameof(Query_ReceiptSloc_ByBarcode),
+                        CommandType.StoredProcedure,
+                        barcode
+                    )
+                );
+
+                return Ok(DataTableToJson(table));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpPost]
         [Route("Query_KittingCard_Outside")]
         public async Task<IActionResult> Query_KittingCard_Outside([FromBody] Dictionary<string, string> requestData)
         {

@@ -261,6 +261,91 @@ namespace HR_API.Controllers
             }
         }
 
+        //ham luu partcard + codedate 09.10.2026
+        [HttpPost]
+        [Route("Save_Partcard_Codedate")]
+        public async Task<IActionResult> Save_Partcard_Codedate([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                if (requestData == null)
+                {
+                    return BadRequest("Missing DATA in request data.");
+                }
+                // Không phân biệt hoa thường tên key (app gửi "partcard", "codedate", "user")
+                var data = new Dictionary<string, string>(requestData, StringComparer.OrdinalIgnoreCase);
+                data.TryGetValue("partcard", out var partcard);
+                data.TryGetValue("codedate", out var codedate);
+                data.TryGetValue("user", out var user);
+
+                if (string.IsNullOrWhiteSpace(partcard) || string.IsNullOrWhiteSpace(codedate))
+                {
+                    return BadRequest("Missing partcard or codedate in request data.");
+                }
+
+                // Gọi stored procedure Save_Partcard_Codedate
+                // Thứ tự tham số phải đúng với procedure: @Partcard, @Codedate, @User
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectEDISystem.StoreFillDS(
+                        "Save_Partcard_Codedate",
+                        CommandType.StoredProcedure,
+                        partcard.Trim(),
+                        codedate.Trim(),
+                        (user ?? "").Trim())
+                );
+
+                // Chuyển DataTable thành JSON: [{"Result":1,"Message":"..."}]
+                string json = DataTableToJson(table);
+
+                // Trả về kết quả JSON
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và trả về mã lỗi 500 cùng thông điệp
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        //ham lay codedate theo partcard 09.10.2026
+        [HttpPost]
+        [Route("Get_Codedate_By_Partcard")]
+        public async Task<IActionResult> Get_Codedate_By_Partcard([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                if (requestData == null)
+                {
+                    return BadRequest("Missing DATA in request data.");
+                }
+                var data = new Dictionary<string, string>(requestData, StringComparer.OrdinalIgnoreCase);
+                data.TryGetValue("partcard", out var partcard);
+
+                if (string.IsNullOrWhiteSpace(partcard))
+                {
+                    return BadRequest("Missing partcard in request data.");
+                }
+
+                // Gọi stored procedure Get_Codedate_By_Partcard, tham số: @Partcard
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectEDISystem.StoreFillDS(
+                        "Get_Codedate_By_Partcard",
+                        CommandType.StoredProcedure,
+                        partcard.Trim())
+                );
+
+                // Chuyển DataTable thành JSON: [{"CodeDate":"..."}]
+                string json = DataTableToJson(table);
+
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+
 
         private string DataTableToJson(DataTable table)
         {
