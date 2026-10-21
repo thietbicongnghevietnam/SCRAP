@@ -179,6 +179,55 @@ namespace HR_API.Controllers
         }
 
         [HttpPost]
+        [Route("Query_update_temppartcard2026")]
+        public async Task<IActionResult> Query_update_temppartcard2026(
+    [FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                // Check required keys
+                string[] requiredKeys = new string[]
+                {
+            "Linename",
+            "Modelname",
+            "partcode",
+            "Deliverydate",
+            "idscan",
+            "barcode"
+                };
+
+                foreach (var key in requiredKeys)
+                {
+                    if (!requestData.ContainsKey(key))
+                    {
+                        return BadRequest($"Missing '{key}' in request data.");
+                    }
+                }
+
+                DataTable table = await Task.FromResult(
+                    DataConnMCS.StoreFillDS(
+                        "Query_update_temppartcard2026",
+                        CommandType.StoredProcedure,
+                        requestData["Linename"],
+                        requestData["Modelname"],
+                        requestData["partcode"],
+                        requestData["Deliverydate"],
+                        requestData["idscan"],
+                        requestData["barcode"]
+                    )
+                );
+
+                string json = DataTableToJson(table);
+
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpPost]
         [Route("Query_delete_temppartcard")]
         public async Task<IActionResult> Query_delete_temppartcard(
     [FromBody] Dictionary<string, string> requestData)
@@ -337,6 +386,45 @@ namespace HR_API.Controllers
                 // Chuyển DataTable thành JSON: [{"CodeDate":"..."}]
                 string json = DataTableToJson(table);
 
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("Get_RuleCodedate_By_PartNumber")]
+        public async Task<IActionResult> Get_RuleCodedate_By_PartNumber([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                if (requestData == null)
+                {
+                    return BadRequest("Missing DATA in request data.");
+                }
+
+                var data = new Dictionary<string, string>(requestData, StringComparer.OrdinalIgnoreCase);
+
+                // Nhận partnumber (mã NVL đã tách từ Partcard phía app)
+                data.TryGetValue("partnumber", out var partnumber);
+
+                if (string.IsNullOrWhiteSpace(partnumber))
+                {
+                    return BadRequest("Missing partnumber in request data.");
+                }
+
+                // Gọi SP Get_RuleCodedate_By_PartNumber, tham số: @partnumber
+                DataTable table = await Task.FromResult(
+                    DataconnectEDISystem.StoreFillDS(
+                        "Get_RuleCodedate_By_PartNumber",
+                        CommandType.StoredProcedure,
+                        partnumber.Trim())
+                );
+
+                // JSON dạng: [{"RuleCodedate":"D/C"}] hoặc [] nếu không có
+                string json = DataTableToJson(table);
                 return Ok(json);
             }
             catch (Exception ex)
