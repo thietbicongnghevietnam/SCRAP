@@ -429,13 +429,16 @@ namespace HR_API.Controllers
                 string userId = request.UserId?.Trim() ?? "";
                 string serialNo = request.SerialNo?.Trim() ?? "";      // có thể trống
 
+                string barcode = request.Barcode?.Trim() ?? "";
+                string department = request.Department?.Trim() ?? "";
+
                 DataTable dt_table = new DataTable();
                 if (typecodedate == "Kitting Card")
                 {
                     // Trace code date theo Kitting card
                     dt_table = await Task.FromResult<DataTable>(
                         DataconnectFreeL.StoreFillDS(nameof(Upload_DateCode_MCS), CommandType.StoredProcedure,
-                            material, codedate, typecodedate, kittingCardId, userId)
+                            material, codedate, typecodedate, kittingCardId, userId, barcode, department)
                     );
                 }
                 else
@@ -488,6 +491,235 @@ namespace HR_API.Controllers
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
+
+        //get sample code date master
+        [HttpPost]
+        [Route("GetMasterCodeDate")]
+        public async Task<IActionResult> GetMasterCodeDate([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                // Kiểm tra xem requestData có chứa key "userid" hay không
+                if (!requestData.ContainsKey("material"))
+                {
+                    return BadRequest("Missing 'material' in request data.");
+                }
+
+                // Gọi phương thức để lấy dữ liệu từ cơ sở dữ liệu
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectFreeL.StoreFillDS(nameof(GetMasterCodeDate), CommandType.StoredProcedure, requestData["material"])
+                );
+
+                // Chuyển DataTable thành JSON
+                string json = DataTableToJson(table);
+
+                // Trả về kết quả JSON
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và trả về mã lỗi 500 cùng thông điệp
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        //tblKittingDIP_LineSub  ==> DIP kitting vao line sub
+        [HttpPost]
+        [Route("InsertKittingDipLineSub")]
+        public async Task<IActionResult> InsertKittingDipLineSub([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                // 1. Body null => JSON sai định dạng (giá trị phải là chuỗi, VD "qty":"100")
+                if (requestData == null)
+                    return BadRequest("Body rỗng hoặc sai định dạng JSON (mọi giá trị phải là chuỗi).");
+
+                // 2. Kiểm tra đủ 4 key và không rỗng
+                string[] keys = { "partcard", "linesub", "qty", "userid" };
+                var missing = keys
+                    .Where(k => !requestData.TryGetValue(k, out var v) || string.IsNullOrWhiteSpace(v))
+                    .ToList();
+                if (missing.Count > 0)
+                    return BadRequest("Thiếu dữ liệu: " + string.Join(", ", missing));
+
+                // 3. Gọi store
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectFreeL.StoreFillDS(nameof(InsertKittingDipLineSub), CommandType.StoredProcedure,
+                        requestData["partcard"].Trim(),
+                        requestData["linesub"].Trim(),
+                        requestData["qty"].Trim(),
+                        requestData["userid"].Trim())
+                );
+
+                // 4. Store lỗi (StoreFillDS trả null) => báo lỗi thay vì NullReference
+                if (table == null)
+                    return StatusCode(500, "Lỗi khi chạy store InsertKittingDipLineSub (kiểm tra Partcard có trong tblKittingCard không).");
+
+                string json = DataTableToJson(table);
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        //tblKittingDIP_LineSub  ==> DIP Kitting List vào line sub
+        [HttpPost]
+        [Route("InsertKittingListDipLineSub")]
+        public async Task<IActionResult> InsertKittingListDipLineSub([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                // 1. Body null => JSON sai định dạng (giá trị phải là chuỗi)
+                if (requestData == null)
+                    return BadRequest("Body rỗng hoặc sai định dạng JSON (mọi giá trị phải là chuỗi).");
+
+                // 2. Kiểm tra đủ 4 key và không rỗng
+                string[] keys = { "barcode", "idkittinglist", "linesub", "userid" };
+                var missing = keys
+                    .Where(k => !requestData.TryGetValue(k, out var v) || string.IsNullOrWhiteSpace(v))
+                    .ToList();
+
+                if (missing.Count > 0)
+                    return BadRequest("Thiếu dữ liệu: " + string.Join(", ", missing));
+
+                // 3. Gọi store
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectFreeL.StoreFillDS(nameof(InsertKittingListDipLineSub), CommandType.StoredProcedure,
+                        requestData["barcode"].Trim(),
+                        requestData["idkittinglist"].Trim(),
+                        requestData["linesub"].Trim(),
+                        requestData["userid"].Trim())
+                );
+
+                // 4. Store lỗi (StoreFillDS trả null) => báo lỗi thay vì NullReference
+                if (table == null)
+                    return StatusCode(500, "Lỗi khi chạy store InsertKittingListDipLineSub (kiểm tra barcode / idkittinglist có hợp lệ không).");
+
+                string json = DataTableToJson(table);
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        //tblKittingDIP_LineSub  ==> DIP kitting vao line sub
+        [HttpPost]
+        [Route("GetQtychiadip")]
+        public async Task<IActionResult> GetQtychiadip([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                // Kiểm tra xem requestData có chứa key "userid" hay không
+                if(requestData == null || !requestData.ContainsKey("partcard"))
+                {
+                    return BadRequest("Missing 'partcard' in request data.");
+                }
+
+
+                // Gọi phương thức để lấy dữ liệu từ cơ sở dữ liệu
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectFreeL.StoreFillDS(nameof(GetQtychiadip), CommandType.StoredProcedure, requestData["partcard"])
+                );
+                if (table == null)
+                    return StatusCode(500, "Lỗi khi chạy store GetQtychiadip.");
+
+                // Chuyển DataTable thành JSON
+                string json = DataTableToJson(table);
+
+                // Trả về kết quả JSON
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và trả về mã lỗi 500 cùng thông điệp
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        //in lai code date (luu code da in lai cua SMT ==> in lai code cho ban mach PCB le => cap ra line khac laze)
+        [HttpPost]
+        [Route("Save_Barcode_Codedate")]
+        public async Task<IActionResult> Save_Barcode_Codedate([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                if (requestData == null)
+                    return BadRequest("Body rỗng hoặc sai định dạng JSON.");
+
+                string[] keys = { "barcode", "codedate", "userid" };
+                var missing = keys
+                    .Where(k => !requestData.TryGetValue(k, out var v) || string.IsNullOrWhiteSpace(v))
+                    .ToList();
+                if (missing.Count > 0)
+                    return BadRequest("Thiếu dữ liệu: " + string.Join(", ", missing));
+
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectFreeL.StoreFillDS(nameof(Save_Barcode_Codedate), CommandType.StoredProcedure,
+                        requestData["barcode"].Trim(),
+                        requestData["codedate"].Trim(),
+                        requestData["userid"].Trim())
+                );
+
+                if (table == null)
+                    return StatusCode(500, "Lỗi khi chạy store Save_Barcode_Codedate.");
+
+                return Ok(DataTableToJson(table));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        //lay gia trị PL cho viec chia partcard SMT
+        [HttpPost]
+        [Route("GetPL_PartcardSubMCS")]
+        public async Task<IActionResult> GetPL_PartcardSubMCS([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                // 1. Kiểm tra body
+                if (requestData == null)
+                    return BadRequest("Body rỗng hoặc sai định dạng JSON.");
+
+                // 2. Kiểm tra đủ các key
+                string[] keys = { "barcode", "model", "partnumber", "qty" };
+                var missing = keys
+                    .Where(k => !requestData.ContainsKey(k) || string.IsNullOrWhiteSpace(requestData[k]))
+                    .ToList();
+
+                if (missing.Count > 0)
+                    return BadRequest("Thiếu dữ liệu: " + string.Join(", ", missing));
+
+                // 3. Gọi store
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectFreeL.StoreFillDS(
+                        nameof(GetPL_PartcardSubMCS),
+                        CommandType.StoredProcedure,
+                        requestData["barcode"].Trim(),
+                        requestData["model"].Trim(),
+                        requestData["partnumber"].Trim(),
+                        requestData["qty"].Trim()
+                    )
+                );
+
+                if (table == null)
+                    return StatusCode(500, "Lỗi khi chạy store GetPL_PartcardSubMCS.");
+
+                // 4. Trả về JSON
+                string json = DataTableToJson(table);
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
 
         [HttpPost]
         [Route("Upload_DateCode_FA")]
@@ -564,6 +796,8 @@ namespace HR_API.Controllers
 
             /// <summary>Serial No (có thể trống)</summary>
             public string? SerialNo { get; set; }
+            public string? Barcode { get; set; }
+            public string? Department { get; set; }
         }
 
 
