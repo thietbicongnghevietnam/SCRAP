@@ -720,6 +720,64 @@ namespace HR_API.Controllers
             }
         }
 
+        // Luu du lieu in tem Partcard Sub MCS (moi tem 1 dong)  ==> chuc nang chia partcard sub MCS
+        [HttpPost]
+        [Route("Save_Print_PartcardSubMCS")]
+        public async Task<IActionResult> Save_Print_PartcardSubMCS([FromBody] Dictionary<string, string> requestData)
+        {
+            try
+            {
+                // 1. Kiểm tra body
+                if (requestData == null)
+                    return Ok("0");
+
+                // 2. Kiểm tra đủ các key bắt buộc
+                string[] keys = { "barcode", "qty", "line", "model", "partnumber", "productionDate" };
+                var missing = keys
+                    .Where(k => !requestData.ContainsKey(k) || string.IsNullOrWhiteSpace(requestData[k]))
+                    .ToList();
+
+                if (missing.Count > 0)
+                    return Ok("0");
+
+                // Lấy giá trị không bắt buộc (không có thì để rỗng)
+                string Get(string key) =>
+                    requestData.TryGetValue(key, out var v) && v != null ? v.Trim() : "";
+
+                // 3. Gọi store (thứ tự tham số phải khớp với store)
+                DataTable table = await Task.FromResult<DataTable>(
+                    DataconnectFreeL.StoreFillDS(
+                        nameof(Save_Print_PartcardSubMCS),
+                        CommandType.StoredProcedure,
+                        Get("barcode"),
+                        Get("qty"),
+                        Get("totalQty"),
+                        Get("labelNo"),
+                        Get("totalLabels"),
+                        Get("line"),
+                        Get("model"),
+                        Get("partnumber"),
+                        Get("category"),
+                        Get("productionDate"),
+                        Get("position"),
+                        Get("pl"),
+                        Get("userId")
+                    )
+                );
+
+                // 4. Trả về 1 = OK, 0 = NG
+                if (table == null || table.Rows.Count == 0)
+                    return Ok("0");
+
+                string result = table.Rows[0][0]?.ToString()?.Trim() ?? "0";
+                return Ok(result == "1" ? "1" : "0");
+            }
+            catch (Exception)
+            {
+                return Ok("0");
+            }
+        }
+
 
         [HttpPost]
         [Route("Upload_DateCode_FA")]
